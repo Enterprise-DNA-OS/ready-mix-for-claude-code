@@ -1,0 +1,12 @@
+[
+  ["Which pours tomorrow are still not confirmed, and who is on credit hold?", "attention"],
+  ["Which plant is short of test samples for what it produced in the last 90 days?", "test-frequency"],
+  ["Which 28 day results does the lab still owe us, and how late are they?", "results-due"],
+  ["Which mixes came in under grade or within 3 MPa of it?", "low-strength"],
+  ["Which loads took more than 90 minutes from batching to discharge?", "docket-check"],
+  ["Where was water added on site with nobody signing for it?", "docket-check"],
+  ["Which customers send back the most concrete, and on which mixes?", "returned"],
+  ["How long did each truck spend on site on a given day?", "truck-day --date=YYYY-MM-DD"],
+  ["Which delivered loads have no invoice yet?", "uninvoiced"],
+  ["How is each mix performing at 28 days against its grade?", "mix-performance"]
+]

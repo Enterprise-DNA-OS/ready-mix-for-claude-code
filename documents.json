@@ -1,11 +1,41 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "delivery-docket",
+    "title": "Delivery docket",
+    "for_each": "select id,docket_no from dockets order by docket_no",
+    "file": "docket_no",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      { "title": "Load", "layout": "record", "sql": "select docket_no,day,customer,site,order_code,plant,truck,volume_m3,batched,arrived,discharged,water_added_l,returned_m3,signed_by from v_dockets where docket_id=$1" },
+      { "title": "Concrete supplied", "layout": "record", "note": "Check the fields your customers and your standard require on a docket before printing it as your delivery record.", "sql": "select mix,grade_mpa strength_grade_mpa,slump_mm specified_slump_mm,max_aggregate_mm,(select admixtures from mixes m join orders o on o.mix_id=m.id join dockets d on d.order_id=o.id where d.id=$1) admixtures from v_dockets where docket_id=$1" }
+    ]
+  },
+  {
+    "name": "test-certificate",
+    "title": "Concrete test results",
+    "for_each": "select id,code from samples order by code",
+    "file": "code",
+    "sections": [
+      { "title": "Sample", "layout": "record", "sql": "select sample,docket_no,customer,site,mix,grade_mpa specified_mpa,sampled_on,slump_mm,cylinders,lab_ref from v_samples where sample_id=$1" },
+      { "title": "Compressive strength", "note": "Results as recorded from the laboratory report. The laboratory report is the original record.", "sql": "select age_days,tested_on,mpa,lab_ref from results where sample_id=$1 order by age_days" }
+    ]
+  },
+  {
+    "name": "pour-confirmation",
+    "title": "Pour confirmation",
+    "for_each": "select id,code from orders where status in ('booked','confirmed') order by code",
+    "file": "code",
+    "sections": [
+      { "title": "Your pour", "layout": "record", "sql": "select o.code order_no,c.name customer,s.name site,s.address,o.pour_date,to_char(o.start_time,'HH24:MI') first_load,o.element,m.code mix,m.description,o.volume_m3,o.pump,o.po_ref your_reference from orders o join customers c on c.id=o.customer_id join sites s on s.id=o.site_id join mixes m on m.id=o.mix_id where o.id=$1" }
+    ]
+  },
+  {
+    "name": "customer-statement",
+    "title": "Loads delivered",
+    "for_each": "select id,code from customers order by code",
+    "file": "code",
+    "sections": [
+      { "title": "Customer", "layout": "record", "sql": "select code,name,email,phone from customers where id=$1" },
+      { "title": "Loads in the last 90 days", "sql": "select d.docket_no,d.day,d.site,d.mix,d.volume_m3,d.returned_m3,d.invoice_ref from v_dockets d join customers c on c.name=d.customer where c.id=$1 and d.day>=current_date-90 order by d.day,d.docket_no" }
     ]
   }
 ]

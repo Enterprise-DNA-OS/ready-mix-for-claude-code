@@ -13,12 +13,13 @@ That layer used to be the whole product, because talking to a database was hard.
 
 ## What you give up
 
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
+- **A live dispatch board.** The schedule is a table you ask about, not trucks you drag between pours. There is no live map or truck tracking.
+- **A driver app and electronic tickets.** Drivers do not tap in arrival and discharge times from the cab; someone records them. Batch panel and telematics connections are custom work.
+- **Offline.** It runs where Claude Code runs and the database is reachable.
 - **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
 
 ## Who this fits
 
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Command Alkon. If you need the answers more than the screens, this is cheaper, faster and yours.
+Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your dispatchers need a live board to run trucks all day, keep it or have one built on these records. If you need the answers more than the screens, this is cheaper, faster and yours.
 
 Installed and run for you: https://enterprisedna.co/omni/instead-of/command-alkon

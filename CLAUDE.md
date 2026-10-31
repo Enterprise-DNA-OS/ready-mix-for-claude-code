@@ -22,9 +22,30 @@ Fill this in once. A worker with context knows. A worker without it guesses.
 
 | When the operator asks for... | Use this |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| tomorrow's pours, the plan for the day | `/pour-day` |
+| what needs chasing | `/attention` |
+| the pour schedule | `/pour-schedule` |
+| batch a load, print a docket | `/ticket` |
+| truck arrived, finished, signed, returned | `/arrive`, `/discharge`, `/sign`, `/return` |
+| docket problems | `/docket-check` |
+| samples, results, the lab | `/sample`, `/result`, `/results-due` |
+| strength, mixes under grade | `/low-strength`, `/mix-performance` |
+| sampling against production | `/test-frequency` |
+| the plant engineer's review | `/plant-quality` |
+| the Monday review | `/weekly-review` |
+| invoices | `/uninvoiced`, `/invoice` |
+| returned concrete | `/returned` |
+| a truck's day | `/truck-day` |
+| one order or docket | `/order`, `/docket` |
+| new customer, site, mix, truck or order | `/add` |
+| confirm, cancel, complete, credit hold | `/confirm`, `/cancel`, `/complete`, `/hold` |
+| pour confirmation or results letter | `/draft-confirmation`, `/draft-results` |
+| records against the rules | `/compliance` |
+| bring data from Command Alkon | `/import` |
+| change a field or rule | `/customise` |
+| a new dashboard | `/new-view` |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+If an ask fits nothing here, run the CLI directly (`npm run mix -- help`) and then propose a new command for it.
 
 ## Hard rules
 
@@ -32,6 +53,10 @@ If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) an
 - Never delete records without an explicit yes in this session. Prefer marking closed or archived.
 - Never invent a record. If a name is ambiguous, list the candidates and ask.
 - The database is the source of truth. If the answer is not in it, say so.
+- A printed docket keeps its batch time, volume, truck and order. Corrections are a credit or a new docket, never an edit.
+- Never record a strength result without the lab report reference. Never change one.
+- A result below grade goes to the plant engineer before any customer letter. Draft it, flag it, stop.
+- The record checks in `docs/compliance.md` are house defaults. Do not tell anyone their concrete complies; say what the records show.
 
 ## Where things live
 

@@ -1,14 +1,31 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Ready-Mix for Claude Code: what needs attention, rendered by npm run view",
+    "title": "The dispatch week",
+    "subtitle": "Pours booked, loads to send and what needs chasing",
     "sections": [
-      {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
-      }
+      { "title": "Pour schedule", "sql": "select code,pour_date,start_time,status,customer,site,mix,plant,pump,to_send_m3,loads_left,credit_hold from v_pour_schedule order by pour_date,start_time,code" },
+      { "title": "Needs attention", "sql": "select kind,record,due,detail from v_attention order by due,kind,record" }
+    ]
+  },
+  {
+    "name": "quality",
+    "title": "Plant quality",
+    "subtitle": "Sampling against production, results due and strength margins",
+    "sections": [
+      { "title": "Sampling in the last 90 days", "note": "The plant rule is set per plant (test_every_m3). Confirm it against the standard and audit scheme your plant works to.", "sql": "select plant,test_every_m3,produced_m3,samples_needed,samples_taken,samples_short from v_test_frequency order by plant" },
+      { "title": "Results due from the lab", "sql": "select sample,mix,customer,sampled_on,due_7,mpa_7,due_28,mpa_28 from v_samples where mpa_28 is null order by due_28" },
+      { "title": "Mix performance at 28 days", "sql": "select mix,grade_mpa,count(mpa_28) results,round(avg(mpa_28),1) mean_mpa,min(mpa_28) lowest_mpa from v_samples group by mix,grade_mpa order by mix" }
+    ]
+  },
+  {
+    "name": "dockets",
+    "title": "Docket checks",
+    "subtitle": "Missing times, signatures, water added and loads not yet invoiced",
+    "sections": [
+      { "title": "Docket record checks", "sql": "select rule,record,issue from v_compliance where rule in ('DOCKET-INCOMPLETE','DISCHARGE-TIME','WATER-ADDED') order by rule,record" },
+      { "title": "Loads not invoiced", "sql": "select docket_no,day,order_code,customer,mix,volume_m3 from v_dockets where invoice_ref is null order by day,docket_no" },
+      { "title": "Returned concrete", "sql": "select customer,mix,sum(returned_m3) returned_m3,sum(volume_m3) sent_m3 from v_dockets where returned_m3>0 group by customer,mix order by returned_m3 desc" }
     ]
   }
 ]
